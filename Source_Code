@@ -1,0 +1,294 @@
+#include <stdio.h>
+#include <string.h>
+
+int MAX_ORDERS = 100;  
+int ITEM_COUNT = 5; 
+
+typedef struct {
+    char itemName[50];
+    float price;
+} MenuItem;
+
+MenuItem menu[] = {
+    {"Burger", 100},
+    {"Pizza", 250},
+    {"Pasta", 200},
+    {"Noodle", 50},
+    {"Lucchi", 30},
+    
+};
+
+typedef struct {
+    int orderID;
+    int tableNumber;
+    char itemsOrdered[100];
+    int quantity;
+    float totalPrice;
+} Order;
+
+
+
+Order orders[100];
+int orderCount = 0;
+
+int validateStudentID(char *studentID) {
+    if (strlen(studentID) == 8) {
+        return 1; 
+    }
+    return 0; 
+}
+
+// Function to calculating the total price of an order
+float calculateTotalPrice(char *items, int quantity) {
+    float total = 0.0;
+    float pricePeritem =0;
+    if (strcmp(items, "Student-Package") == 0) {
+        pricePeritem = 150.0;
+    } else if (strcmp(items, "Lunch-Package") == 0) {
+        pricePeritem = 300.0;
+    } else if (strcmp(items, "Family-Package") == 0) {
+        pricePeritem = 700.0;
+    } else if (strcmp(items, "Burger") == 0) {
+        pricePeritem = 100.0;
+    } else if (strcmp(items, "Pizza") == 0) {
+        pricePeritem = 250.0;
+    } else if (strcmp(items, "Pasta") == 0) {
+        pricePeritem = 200.0;
+    } else if (strcmp(items, "Noodle") == 0) {
+        pricePeritem = 50.0;
+    } else if (strcmp(items, "Lucchi") == 0) {
+        pricePeritem = 30.0;
+    }
+
+    return pricePeritem * quantity;
+    char *item = strtok(items, ",");
+    while (item != NULL) {
+        for (int i = 0; i < ITEM_COUNT; i++) {
+            if (strcmp(item, menu[i].itemName) == 0) {
+                total =total + menu[i].price * quantity;
+                break;
+            }
+        }
+        item = strtok(NULL, ",");
+    }
+    return total;
+}
+
+// Function to add a new order
+int addOrder() {
+    if (orderCount >= MAX_ORDERS) {
+        printf("Order list is full!\n");
+        return 0;
+    }
+
+    printf("Enter Order ID: ");
+    scanf("%d", &orders[orderCount].orderID);
+
+    printf("Enter Table Number: ");
+    scanf("%d", &orders[orderCount].tableNumber);
+
+    printf("Order list:");
+    printf("\n1.Burger\n");
+    printf("2.Pizza\n");
+    printf("3.Pasta\n");
+    printf("4.Salad\n");
+    printf("5.Soda\n");
+    printf("6.Lunch-Package\n");
+    printf("7.Family-Package\n");
+    printf("8.Student-Package\n");
+    printf("\nIf You want to take our package, then you have to write full package name to confrim the package!\n");
+    printf("\n");
+    printf("Please, order: ");
+
+    scanf(" %[^\n]", orders[orderCount].itemsOrdered);
+
+    
+    
+    
+
+    
+
+
+    
+
+    // Optionally display details about the selected package
+    if (strcmp(orders[orderCount].itemsOrdered, "Student-Package") == 0) {
+        char School[1000];
+     printf("Please, Enter your School Name: ");
+     scanf(" %s", School);
+
+     char studentID[20];
+
+    
+     // Validate Student ID
+     while(1){
+        printf("Enter your Student ID: ");
+        scanf("%s", studentID);
+
+        if (validateStudentID(studentID)) {
+            printf("Student ID accepted.\n");
+            break;
+        } else {
+            printf("Invalid Student ID.\n");
+        }
+    }
+        printf("\nStudent Package includes:\n");
+        printf("- Bharta\n");
+        printf("- Khichuri\n");
+        printf("- Fried egg\n");
+        printf("- Fried eggplant\n");
+    } else if (strcmp(orders[orderCount].itemsOrdered, "Lunch-Package") == 0) {
+        printf("\nLunch Package includes:\n");
+        printf("- Chicken\n");
+        printf("- Fried Rice\n");
+        printf("- Casonat salad\n");
+        printf("- Soft-Drink");
+    } else if (strcmp(orders[orderCount].itemsOrdered, "Family-Package") == 0) {
+        printf("\nFamily Package includes:\n");
+        printf("- Basmati rice\n");
+        printf("- Roast beef\n");
+        printf("- baked vegetables\n");
+        printf("- Borhani (4 glasses)\n");
+    }
+
+    while (1) {
+        printf("Please, confirm the package you selected: %s (yes/no): ", orders[orderCount].itemsOrdered);
+        char confirm[10];
+        scanf(" %[^\n]", confirm);
+
+        if (strcmp(confirm, "yes") == 0) {
+            break; 
+        } else {
+            printf("Please, select a package again: ");
+            scanf(" %[^\n]", orders[orderCount].itemsOrdered);
+        }
+    }
+
+    printf("Enter Quantity: ");
+    scanf("%d", &orders[orderCount].quantity);
+
+    orders[orderCount].totalPrice = calculateTotalPrice(orders[orderCount].itemsOrdered, orders[orderCount].quantity);
+
+    printf("Order added successfully! Total Price: %.2f tk\n", orders[orderCount].totalPrice);
+    orderCount++;
+    return 1;
+}
+
+// Function to display all orders
+int displayOrders() {
+    if (orderCount == 0) {
+        printf("No orders available!\n");
+        return 0;
+    }
+
+    for (int i = 0; i < orderCount; i++) {
+        printf("\nOrder ID: %d\n", orders[i].orderID);
+        printf("Table Number: %d\n", orders[i].tableNumber);
+        printf("Items Ordered: %s\n", orders[i].itemsOrdered);
+        printf("Quantity: %d\n", orders[i].quantity);
+        printf("Total Price: %.2f tk\n", orders[i].totalPrice);
+    }
+    return 1;
+}
+
+// Function to search for an order
+int searchOrder() {
+    int choice, searchID, searchTable;
+
+    printf("Search by: 1. Order ID  2. Table Number\n");
+    printf("Enter choice: ");
+    scanf("%d", &choice);
+
+    if (choice == 1) {
+        printf("Enter Order ID to search: ");
+        scanf("%d", &searchID);
+        for (int i = 0; i < orderCount; i++) {
+            if (orders[i].orderID == searchID) {
+                printf("\nOrder found:\n");
+                printf("Order ID: %d\n", orders[i].orderID);
+                printf("Table Number: %d\n", orders[i].tableNumber);
+                printf("Items Ordered: %s\n", orders[i].itemsOrdered);
+                printf("Quantity: %d\n", orders[i].quantity);
+                printf("Total Price: %.2f tk\n", orders[i].totalPrice);
+                return 1;
+            }
+        }
+    } else if (choice == 2) {
+        printf("Enter Table Number to search: ");
+        scanf("%d", &searchTable);
+        for (int i = 0; i < orderCount; i++) {
+            if (orders[i].tableNumber == searchTable) {
+                printf("\nOrder found:\n");
+                printf("Order ID: %d\n", orders[i].orderID);
+                printf("Table Number: %d\n", orders[i].tableNumber);
+                printf("Items Ordered: %s\n", orders[i].itemsOrdered);
+                printf("Quantity: %d\n", orders[i].quantity);
+                printf("Total Price: %.2f tk\n", orders[i].totalPrice);
+                return 1;
+            }
+        }
+    }
+
+    printf("Order not found!\n");
+    return 0;
+}
+
+// Function to update an order
+int updateOrder() {
+    int updateID;
+
+    printf("Enter Order ID to update: ");
+    scanf("%d", &updateID);
+
+    for (int i = 0; i < orderCount; i++) {
+        if (orders[i].orderID == updateID) {
+            printf("Enter new Table Number: ");
+            scanf("%d", &orders[i].tableNumber);
+
+            printf("Enter new Items Ordered: ");
+            scanf(" %s", orders[i].itemsOrdered);
+
+            printf("Enter new Quantity: ");
+            scanf("%d", &orders[i].quantity);
+
+            printf("Enter new Total Price: ");
+            scanf("%f", &orders[i].totalPrice);
+
+            printf("Order updated successfully!\n");
+            return 1;
+        }
+    }
+
+    printf("Order ID not found!\n");
+    return 0;
+}
+
+
+
+
+
+// Main function with menu
+int main() {
+    int choice;
+
+    do {
+        printf("\nRestaurant Order Management System\n");
+        printf("1. Add Order\n");
+        printf("2. Display Orders\n");
+        printf("3. Search Order\n");
+        printf("4.Update Your Order\n");
+        printf("5. Exit\n");
+        printf("Enter your choice: ");
+        scanf("%d", &choice);
+
+        if (choice == 1) addOrder();
+        else if (choice == 2) displayOrders();
+        else if (choice == 3) searchOrder();
+        else if(choice == 4) updateOrder();
+        else if (choice == 5) printf("Exiting...\n");
+        else printf("Invalid choice! Try again.\n");
+
+    } while (choice != 5);
+
+    return 0;
+}
