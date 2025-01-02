@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Restaurant Order Management System</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Restaurant Order Management System</h1>
+        
+        <div class="hero-section">
+            <img src="rsz_1leonardo_phoenix_09_a_vibrant_professional_and_modern_flat_vec_1.jpg" alt="Delicious Food" class="animated-image">
+            <h2>Order Your Favorite Meals!</h2>
+            <button class="order-button">Order Now !</button>
+        </div>
+
+        <div id="menu">
+            <h2>Menu</h2>
+            <ul>
+                <li>Burger - 100 tk</li>
+                <li>Pizza - 250 tk</li>
+                <li>Pasta - 200 tk</li>
+                <li>Noodle - 50 tk</li>
+                <li>Lucchi - 30 tk</li>
+                <li>Student-Package - 150 tk</li>
+                <li>Lunch-Package - 300 tk</li>
+                <li>Family-Package - 700 tk</li>
+            </ul>
+        </div>
+
+        <div id="orderForm">
+            <h2>Add Order</h2>
+            <form id="addOrderForm">
+                <label for="orderID">Order ID:</label>
+                <input type="number" id="orderID" required>
+                <label for="tableNumber">Table Number:</label>
+                <input type="number" id="tableNumber" required>
+                <label for="itemsOrdered">Items Ordered:</label>
+                <input type="text" id="itemsOrdered" required>
+                <label for="quantity">Quantity:</label>
+                <input type="number" id="quantity" required>
+                <div id="studentDetails" style="display:none;">
+                    <label for="universityName">University Name:</label>
+                    <input type="text" id="universityName">
+                    <label for="universityID">University ID:</label>
+                    <input type="text" id="universityID">
+                </div>
+                <button type="button" onclick="addOrder()">Add Order</button>
+            </form>
+        </div>
+
+        <div id="searchForm">
+            <h2>Search Order</h2>
+            <form id="searchOrderForm">
+                <label for="searchOrderID">Order ID:</label>
+                <input type="number" id="searchOrderID">
+                <button type="button" onclick="searchOrder()">Search</button>
+            </form>
+        </div>
+
+        <div id="ordersList">
+            <h2>Orders</h2>
+            <ul id="orders"></ul>
+        </div>
+    </div>
+    <script src="scripts.js"></script>
+</body>
+</html>
+
+
